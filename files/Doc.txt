@@ -1,0 +1,91 @@
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+public class teste {
+	
+	public static void main(String[] args) {
+		
+		String[] report = "020000|9;030100|14;030112|8;030200|15;040000;060301".split(";");
+		
+		List<String> elements_NAV = new ArrayList<>();
+		List<String> elements_Total = new ArrayList<>();
+		
+		
+		for(String p : report) {
+			if(p.startsWith("020000") || p.startsWith("030000") || p.startsWith("040000") || p.startsWith("050000") || p.startsWith("060000")) {
+				System.out.println("terminar");
+				elements_Total.add(p);
+				else {
+					System.out.println("terminar");
+					elements_NAV.add(p);
+				}
+		}
+		
+		String callID = "1234";
+		String appId = "1";
+		String dateTime = "12/06/2019 16:18:19";
+		String ani = "11998482182";
+		String event;
+		String opt;
+		String seg;
+		String var1 = "41335036865";
+		
+		
+	
+		try {
+			SimpleDateFormat dateParser = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+			Date data = dateParser.parse(dateTime);
+			System.out.println(dateTime);
+			System.out.println(countTime(data, 95));
+			
+			System.out.println("CallID | AppID | DateTime | ANI | Event | Opt | Seg | Var1");
+			for(String p : elements_Total) {
+				System.out.println(p);
+				String[] events = separeEvent(p);
+				dateTime = countTime(data, Integer.parseInt(p.substring(p.indexOf("|")+1)));
+				System.out.printf("%s | %s | %s | %s | %s | %s | %s | %s \n\n",callID, appId, dateTime, ani, events[0], events[1], events[2], var1);
+				
+			}
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		
+		
+		
+		
+		System.out.println();
+		
+		
+	}
+
+	public static String[] separeEvent(String cod) {
+		String event = cod.substring(0, 2);
+		String opt = cod.substring(2, 4);
+		String seg = cod.substring(4, 6);
+		
+		String[] obj = new String[3];
+		
+		obj[0] = event;
+		obj[1] = opt;
+		obj[2] = seg;
+		
+		if(obj[0].equals("06")) {
+			
+		}
+		
+		return obj;
+	}
+	
+	public static String countTime(Date time, int seconds) {
+		Date Time = new Date(time.getTime() + seconds * 1000);
+		SimpleDateFormat dateParser = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		String str = dateParser.format(Time);
+		return str;
+	}
+	
+}
